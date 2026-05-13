@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Für meine Liebste – Herzlichen Glückwunsch! 🌸</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Animated gradient background -->
+  <div class="bg-gradient"></div>
+  <canvas id="petalCanvas"></canvas>
+
+  <!-- ================= INTRO SCREEN ================= -->
+  <section id="intro" class="screen active">
+    <div class="intro-content">
+      <div class="sparkle sparkle-1">✦</div>
+      <div class="sparkle sparkle-2">✧</div>
+      <div class="sparkle sparkle-3">✦</div>
+      <div class="sparkle sparkle-4">✧</div>
+
+      <p class="intro-eyebrow">Für dich, meine Liebste</p>
+      <h1 class="intro-title">
+        <span class="word">Herzlichen</span>
+        <span class="word">Glückwunsch!</span>
+      </h1>
+      <p class="intro-subtitle">
+        Du hast deine schriftlichen Prüfungen gemeistert — <br />
+        mit all deiner Kraft, deinem Mut und deinem wunderschönen Kopf. 🌷
+      </p>
+      <p class="intro-text">
+        Ich bin so unendlich stolz auf dich. <br />
+        Klick auf den Knopf — ich habe dir einen Strauß gepflückt.
+      </p>
+      <button id="revealBtn" class="reveal-btn">
+        <span>Meinen Strauß enthüllen</span>
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M5 12h14M13 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= BOUQUET SCREEN ================= -->
+  <section id="bouquet" class="screen">
+    <header class="bouquet-header">
+      <p class="bouquet-eyebrow">~ Ein Strauß voller Liebe ~</p>
+      <h2 class="bouquet-title">Für die klügste, schönste, wundervollste Frau</h2>
+      <p class="bouquet-hint">Klick auf jede Blume — sie hat dir etwas zu sagen 💌</p>
+    </header>
+
+    <!-- The Bouquet (SVG) -->
+    <div class="bouquet-stage">
+      <svg id="bouquetSvg" viewBox="0 0 800 900" xmlns="http://www.w3.org/2000/svg" aria-label="Blumenstrauß">
+        <defs>
+          <!-- gradients for petals -->
+          <radialGradient id="gRose" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#ffd1dc"/>
+            <stop offset="60%" stop-color="#ff6f91"/>
+            <stop offset="100%" stop-color="#c2185b"/>
+          </radialGradient>
+          <radialGradient id="gPink" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#ffe6f0"/>
+            <stop offset="70%" stop-color="#ff9ec7"/>
+            <stop offset="100%" stop-color="#e91e63"/>
+          </radialGradient>
+          <radialGradient id="gPurple" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#f3e0ff"/>
+            <stop offset="60%" stop-color="#c79bff"/>
+            <stop offset="100%" stop-color="#7b1fa2"/>
+          </radialGradient>
+          <radialGradient id="gYellow" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#fff7c2"/>
+            <stop offset="60%" stop-color="#ffd54f"/>
+            <stop offset="100%" stop-color="#f57c00"/>
+          </radialGradient>
+          <radialGradient id="gOrange" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#ffe0b2"/>
+            <stop offset="60%" stop-color="#ff8a65"/>
+            <stop offset="100%" stop-color="#d84315"/>
+          </radialGradient>
+          <radialGradient id="gWhite" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="70%" stop-color="#fff3e0"/>
+            <stop offset="100%" stop-color="#d7ccc8"/>
+          </radialGradient>
+          <radialGradient id="gBlue" cx="50%" cy="50%" r="60%">
+            <stop offset="0%" stop-color="#e1f5fe"/>
+            <stop offset="60%" stop-color="#81d4fa"/>
+            <stop offset="100%" stop-color="#0277bd"/>
+          </radialGradient>
+          <radialGradient id="gCenter" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#fff8e1"/>
+            <stop offset="100%" stop-color="#ffb300"/>
+          </radialGradient>
+          <linearGradient id="gStem" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#66bb6a"/>
+            <stop offset="100%" stop-color="#1b5e20"/>
+          </linearGradient>
+          <linearGradient id="gWrap" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#fce4ec"/>
+            <stop offset="50%" stop-color="#f8bbd0"/>
+            <stop offset="100%" stop-color="#f48fb1"/>
+          </linearGradient>
+
+          <!-- single petal shape (group so <use> inherits coords cleanly) -->
+          <g id="petal">
+            <path d="M0,-95 C40,-70 40,-20 0,0 C-40,-20 -40,-70 0,-95 Z"/>
+          </g>
+
+          <!-- a full rose / round flower -->
+          <symbol id="flowerRound" viewBox="-100 -100 200 200">
+            <g>
+              <use href="#petal" transform="rotate(0)"/>
+              <use href="#petal" transform="rotate(45)"/>
+              <use href="#petal" transform="rotate(90)"/>
+              <use href="#petal" transform="rotate(135)"/>
+              <use href="#petal" transform="rotate(180)"/>
+              <use href="#petal" transform="rotate(225)"/>
+              <use href="#petal" transform="rotate(270)"/>
+              <use href="#petal" transform="rotate(315)"/>
+              <circle cx="0" cy="0" r="22" fill="url(#gCenter)"/>
+            </g>
+          </symbol>
+
+          <!-- 5-petal daisy-like flower -->
+          <symbol id="flowerFive" viewBox="-100 -100 200 200">
+            <g>
+              <use href="#petal" transform="rotate(0)"/>
+              <use href="#petal" transform="rotate(72)"/>
+              <use href="#petal" transform="rotate(144)"/>
+              <use href="#petal" transform="rotate(216)"/>
+              <use href="#petal" transform="rotate(288)"/>
+              <circle cx="0" cy="0" r="20" fill="url(#gCenter)"/>
+            </g>
+          </symbol>
+
+          <!-- tulip -->
+          <symbol id="tulip" viewBox="-60 -120 120 140">
+            <path d="M-40,-10 C-50,-80 -20,-115 0,-95 C20,-115 50,-80 40,-10 C20,5 -20,5 -40,-10 Z"/>
+            <path d="M-25,-10 C-30,-70 -5,-105 0,-90 C5,-105 30,-70 25,-10 Z" fill="rgba(255,255,255,0.18)"/>
+          </symbol>
+
+          <!-- leaf -->
+          <symbol id="leaf" viewBox="-50 -100 100 100">
+            <path d="M0,0 C-45,-30 -45,-80 0,-100 C45,-80 45,-30 0,0 Z"/>
+            <path d="M0,0 L0,-95" stroke="rgba(0,0,0,0.18)" stroke-width="2" fill="none"/>
+          </symbol>
+        </defs>
+
+        <!-- ====== STEMS ====== -->
+        <g class="stems" stroke="url(#gStem)" stroke-width="9" stroke-linecap="round" fill="none">
+          <path d="M400,820 C340,650 290,520 230,360"/>
+          <path d="M400,820 C360,650 320,520 290,330"/>
+          <path d="M400,820 C390,650 380,500 380,310"/>
+          <path d="M400,820 C410,650 440,500 470,300"/>
+          <path d="M400,820 C440,650 480,520 520,330"/>
+          <path d="M400,820 C460,650 510,520 570,360"/>
+          <path d="M400,820 C380,650 360,500 350,250"/>
+          <path d="M400,820 C420,650 440,500 450,250"/>
+          <path d="M400,820 C400,650 400,500 400,220"/>
+        </g>
+
+        <!-- ====== LEAVES ====== -->
+        <g class="leaves">
+          <use href="#leaf" x="270" y="500" width="80" height="80" fill="#43a047" transform="rotate(-25 310 540)"/>
+          <use href="#leaf" x="450" y="480" width="80" height="80" fill="#2e7d32" transform="rotate(20 490 520)"/>
+          <use href="#leaf" x="320" y="620" width="70" height="70" fill="#388e3c" transform="rotate(-15 355 655)"/>
+          <use href="#leaf" x="430" y="640" width="70" height="70" fill="#43a047" transform="rotate(15 465 675)"/>
+          <use href="#leaf" x="250" y="380" width="65" height="65" fill="#2e7d32" transform="rotate(-35 282 412)"/>
+          <use href="#leaf" x="500" y="400" width="65" height="65" fill="#43a047" transform="rotate(30 532 432)"/>
+        </g>
+
+        <!-- ====== FLOWERS (interactive) ====== -->
+        <g class="flowers">
+          <!-- big center rose -->
+          <g class="flower" data-msg="Du bist mein Mittelpunkt. ❤️ Alles dreht sich um dich.">
+            <use href="#flowerRound" x="320" y="140" width="160" height="160" fill="url(#gRose)"/>
+          </g>
+
+          <!-- top left purple -->
+          <g class="flower" data-msg="Stolz strahlt aus mir, wenn ich an dich denke. 💜">
+            <use href="#flowerRound" x="180" y="280" width="140" height="140" fill="url(#gPurple)"/>
+          </g>
+
+          <!-- top right yellow -->
+          <g class="flower" data-msg="Du bringst Sonne in jeden meiner Tage. ☀️">
+            <use href="#flowerFive" x="490" y="260" width="140" height="140" fill="url(#gYellow)"/>
+          </g>
+
+          <!-- left pink -->
+          <g class="flower" data-msg="Jede durchlernte Nacht hat sich gelohnt — schau, was du geschafft hast! 🌸">
+            <use href="#flowerFive" x="230" y="380" width="130" height="130" fill="url(#gPink)"/>
+          </g>
+
+          <!-- right orange -->
+          <g class="flower" data-msg="Deine Energie ist ansteckend. Ich liebe deine Art. 🧡">
+            <use href="#flowerRound" x="450" y="370" width="130" height="130" fill="url(#gOrange)"/>
+          </g>
+
+          <!-- tulip left -->
+          <g class="flower" data-msg="Du bist mutig — und das macht dich unwiderstehlich. 🌷">
+            <use href="#tulip" x="270" y="350" width="80" height="100" fill="url(#gRose)"/>
+          </g>
+
+          <!-- tulip right -->
+          <g class="flower" data-msg="Dein Lachen ist meine Lieblingsmelodie. 🌷">
+            <use href="#tulip" x="450" y="340" width="80" height="100" fill="url(#gPurple)"/>
+          </g>
+
+          <!-- white flower bottom left -->
+          <g class="flower" data-msg="Rein, ehrlich, wundervoll — so wie du. 🤍">
+            <use href="#flowerFive" x="290" y="500" width="110" height="110" fill="url(#gWhite)"/>
+          </g>
+
+          <!-- blue flower bottom right -->
+          <g class="flower" data-msg="Egal wie groß die Welle: ich bin an deiner Seite. 💙">
+            <use href="#flowerFive" x="410" y="490" width="110" height="110" fill="url(#gBlue)"/>
+          </g>
+
+          <!-- small accent pink -->
+          <g class="flower" data-msg="Du hast es geschafft. Und du wirst noch viel mehr schaffen. 💖">
+            <use href="#flowerRound" x="370" y="440" width="90" height="90" fill="url(#gPink)"/>
+          </g>
+        </g>
+
+        <!-- ====== WRAPPING / BOUQUET PAPER ====== -->
+        <g class="wrap">
+          <path d="M400,820
+                   L260,610
+                   Q240,640 250,690
+                   Q260,750 300,790
+                   Q350,830 400,830
+                   Q450,830 500,790
+                   Q540,750 550,690
+                   Q560,640 540,610 Z"
+                fill="url(#gWrap)" stroke="#ad1457" stroke-width="2" opacity="0.95"/>
+          <path d="M400,820 L300,640 Q310,660 320,680 L400,820 Z" fill="rgba(255,255,255,0.25)"/>
+          <!-- ribbon -->
+          <ellipse cx="400" cy="780" rx="55" ry="14" fill="#ad1457"/>
+          <path d="M345,780 Q310,795 295,830 Q330,815 355,790 Z" fill="#c2185b"/>
+          <path d="M455,780 Q490,795 505,830 Q470,815 445,790 Z" fill="#c2185b"/>
+          <circle cx="400" cy="780" r="10" fill="#880e4f"/>
+        </g>
+      </svg>
+
+      <!-- floating message bubble -->
+      <div id="msgBubble" class="msg-bubble" aria-live="polite"></div>
+    </div>
+
+    <!-- ============== LOVE LETTER ============== -->
+    <section class="letter">
+      <div class="letter-card">
+        <h3 class="letter-title">Ein paar Zeilen für dich</h3>
+        <p>
+          Meine Liebste,<br /><br />
+          du hast es geschafft. Deine schriftlichen Prüfungen — vorbei.
+          All die langen Nächte, das Zweifeln, das Wiederaufstehen — und du bist
+          immer wieder aufgestanden. Das ist es, was ich an dir so sehr bewundere:
+          du gibst nie auf.
+        </p>
+        <p>
+          Ich liebe dein Lachen, deine Klugheit, deinen Mut.
+          Ich liebe, wie du die Welt siehst, und dass ich sie mit dir sehen darf.
+          Du bist der schönste Teil meines Lebens — heute, morgen und immer.
+        </p>
+        <p class="signature">
+          Ich bin so unfassbar stolz auf dich.<br />
+          Ich liebe dich. 💗
+        </p>
+        <button id="finaleBtn" class="finale-btn">Ein letztes kleines Geschenk ✨</button>
+      </div>
+    </section>
+  </section>
+
+  <!-- ================= FINALE OVERLAY ================= -->
+  <div id="finale" class="finale-overlay" aria-hidden="true">
+    <div class="finale-inner">
+      <div class="heart-big">❤</div>
+      <h2>Ich liebe dich.</h2>
+      <p>Heute, morgen und für immer.</p>
+      <button id="closeFinale" class="reveal-btn small">Zurück zum Strauß</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
